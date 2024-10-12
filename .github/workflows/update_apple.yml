@@ -1,0 +1,28 @@
+name: Update apple.list
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # Execute at 4 AM every morning
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download file
+        run: curl -o apple.txt https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
+
+      - name: Process file
+        run: |
+          awk '/^\s*-/{print "DOMAIN," substr($0, 3)}' apple.txt > rules/apple.list
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "action@github.com"
+          git add rules/apple.list
+          git commit -m "Update apple.list with new domains" || echo "No changes to commit"
+          git push
