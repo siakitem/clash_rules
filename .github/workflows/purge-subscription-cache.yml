@@ -1,0 +1,55 @@
+name: Purge Subscription Cache
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "config/**"
+      - "rules/**"
+  workflow_dispatch:
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check required secrets
+        id: check
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_SUB_PREFIX: ${{ secrets.CF_SUB_PREFIX }}
+        run: |
+          missing=0
+          for key in CF_API_TOKEN CF_ZONE_ID CF_SUB_PREFIX; do
+            if [ -z "${!key}" ]; then
+              echo "::warning::Missing required secret: ${key}"
+              missing=1
+            fi
+          done
+          echo "missing=${missing}" >> "${GITHUB_OUTPUT}"
+
+      - name: Purge Cloudflare cache prefix
+        if: steps.check.outputs.missing == '0'
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_SUB_PREFIX: ${{ secrets.CF_SUB_PREFIX }}
+        run: |
+          payload="$(jq -nc --arg prefix "${CF_SUB_PREFIX}" '{prefixes: [$prefix]}')"
+          response_file="$(mktemp)"
+          http_code="$(
+            curl -sS -o "${response_file}" -w '%{http_code}' \
+              -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+              -H "Authorization: Bearer ${CF_API_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data "${payload}"
+          )"
+          test "${http_code}" = "200"
+          jq -e '.success == true' "${response_file}" >/dev/null
+
+      - name: Skip when secrets are missing
+        if: steps.check.outputs.missing != '0'
+        run: |
+          echo "Cloudflare purge skipped because required secrets are not configured."
