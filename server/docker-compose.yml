@@ -1,0 +1,19 @@
+services:
+  subconverter-rules:
+    image: ${SUBCONVERTER_IMAGE:?Set SUBCONVERTER_IMAGE to a pinned tag or digest}
+    container_name: subconverter-rules
+    restart: unless-stopped
+
+  subconverter-unified:
+    build: .
+    container_name: subconverter-unified
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:25500:25500"
+    env_file:
+      - ${SERVICE_ENV_FILE:-environment}
+    volumes:
+      - ${SOURCES_PATH:-./sources.yaml}:/data/sources.yaml:ro
+      - ./profiles.yaml:/app/profiles.yaml:ro
+    depends_on:
+      - subconverter-rules

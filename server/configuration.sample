@@ -1,0 +1,16 @@
+SUBCONVERTER_URL=http://subconverter-rules:25500/sub
+SUBCONVERTER_IMAGE=asdlokj1qpi23/subconverter:replace-with-pinned-version
+COMMON_CONFIG_URL=https://raw.githubusercontent.com/siakitem/clash_rules/replace-with-validated-commit/config/common.ini
+SOURCES_FILE=/data/sources.yaml
+PROFILES_FILE=/app/profiles.yaml
+SERVICE_TOKEN=replace-with-a-random-service-token
+LEGACY_PROFILE=company
+CACHE_TTL_SECONDS=300
+REQUEST_TIMEOUT_SECONDS=180
+COMPANY_SOCKS_NAME=🏢 公司 SOCKS5
+COMPANY_SOCKS_SERVER=192.168.1.10
+COMPANY_SOCKS_PORT=1080
+COMPANY_SOCKS_TYPE=socks5
+COMPANY_SOCKS_USERNAME=
+COMPANY_SOCKS_PASSWORD=
+COMPANY_SOCKS_UDP=1

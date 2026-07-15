@@ -1,0 +1,4 @@
+sources:
+  example:
+    token: replace-with-a-random-source-token
+    url: https://subscription.example.invalid/nodes.yaml
