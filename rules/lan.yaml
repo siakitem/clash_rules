@@ -1,0 +1,24 @@
+payload:
+  - DOMAIN,localhost
+  - DOMAIN,router.asus.com
+  - DOMAIN,www.asusrouter.com
+  - DOMAIN,routerlogin.com
+  - DOMAIN,www.routerlogin.com
+  - DOMAIN,tplogin.cn
+  - DOMAIN,miwifi.com
+  - DOMAIN,www.miwifi.com
+  - DOMAIN-SUFFIX,lan
+  - DOMAIN-SUFFIX,local
+  - DOMAIN-SUFFIX,localdomain
+  - DOMAIN-SUFFIX,home.arpa
+  - IP-CIDR,10.0.0.0/8,no-resolve
+  - IP-CIDR,127.0.0.0/8,no-resolve
+  - IP-CIDR,169.254.0.0/16,no-resolve
+  - IP-CIDR,172.16.0.0/12,no-resolve
+  - IP-CIDR,192.168.0.0/16,no-resolve
+  - IP-CIDR,224.0.0.0/4,no-resolve
+  - IP-CIDR,255.255.255.255/32,no-resolve
+  - IP-CIDR6,::1/128,no-resolve
+  - IP-CIDR6,fc00::/7,no-resolve
+  - IP-CIDR6,fe80::/10,no-resolve
+  - IP-CIDR6,ff00::/8,no-resolve
