@@ -1,0 +1,7 @@
+profiles:
+  company:
+    force_public_egress: true
+    chain_upstreams: true
+  home:
+    force_public_egress: false
+    chain_upstreams: false
